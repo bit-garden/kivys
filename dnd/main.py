@@ -17,13 +17,26 @@ Toast = autoclass('android.widget.Toast')
 context = autoclass('org.renpy.android.PythonActivity').mActivity
 NotificationBuilder = autoclass('android.app.Notification$Builder')
 service = autoclass('org.renpy.android.PythonService').mService
+PythonActivity = autoclass('org.renpy.android.PythonActivity')
+Notification = autoclass('android.app.Notification')
 
 @run_on_ui_thread
-def toast(text):
+def notif(title,text):
+  Drawable = autoclass("{}.R$drawable".format(context.getPackageName()))
+  icon = getattr(Drawable, 'icon')
+  
   String = autoclass('java.lang.String')
+  t = cast('java.lang.CharSequence', String(title))
   c = cast('java.lang.CharSequence', String(text))
-  notification_service = service.getSystemService(Context.NOTIFICATION_SERVICE)
-  notification_builder = NotificationBuilder(service)
+  
+  notification_service = context.getSystemService(PythonActivity.NOTIFICATION_SERVICE)
+  notification_builder = NotificationBuilder(context)
+  
+  notification_builder.setContentTitle(t)
+  notification_builder.setContentText(c)
+  notification_builder.setSmallIcon(icon)
+  
+  notification_service.notify(1, notification_builder.build())
   
 
 @run_on_ui_thread
@@ -42,6 +55,7 @@ class DndApp(App):
   
   def build(self):
     self.toast=toast
+    self.notif=notif
     return MyFirstWidget()
 
 DndApp().run()
