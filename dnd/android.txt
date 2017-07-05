@@ -1,3 +1,0 @@
-title=DnD
-author=dakun
-orientation=landscape

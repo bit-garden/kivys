@@ -1,0 +1,3 @@
+title=Arkeon
+author=dakun
+orientation=landscape

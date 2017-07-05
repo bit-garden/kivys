@@ -1,0 +1,3 @@
+title=DnDmd
+author=dakun
+orientation=landscape

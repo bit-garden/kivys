@@ -1,31 +1,66 @@
 from kivy.app import App
+from kivy.clock import Clock
 
-from kivymd.button import MDRaisedButton
-from kivymd.card import MDCard
+from kivy.uix.stacklayout import StackLayout
+
 from kivymd.theming import ThemeManager
+from kivymd.snackbar import Snackbar
+
+from feedbacks import toast, notify
+
+import Entity
 
 
-from jnius import autoclass, PythonJavaClass, java_method, cast
-from android import activity
-from android.runnable import run_on_ui_thread
+game = Entity.Engine([Entity.sUpdate()])
 
-
-Toast = autoclass('android.widget.Toast')
-context = autoclass('org.renpy.android.PythonActivity').mActivity
-
-@run_on_ui_thread
-def toast(text, length_long=False):
-  duration = Toast.LENGTH_LONG if length_long else Toast.LENGTH_SHORT
-  String = autoclass('java.lang.String')
-  c = cast('java.lang.CharSequence', String(text))
-  t = Toast.makeText(context, c, duration)
-  t.show()
-
-class TestApp(App):
-  theme_cls = ThemeManager()
-
-  def build(self):
+class test(Entity.Entity):
+  def __init__(self):
+    super(test,self).__init__()
+    self.components=[Entity.cUpdate(self.tick,5000,True)]
+    
+  def tick(self,_delta):
     toast('hi')
-    return MDRaisedButton(text='hi')
-TestApp().run()
+  
+def start():
+  Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.5)
+  game.add(test())
+  toast(str(game.entities))
+
+
+
+
+
+def snack(text):
+  Snackbar(text=text).show()
+
+class MyFirstWidget(StackLayout):
+  pass
+
+class DndApp(App):
+  theme_cls = ThemeManager()
+  def build(self):
+    self.toast=toast
+    self.notify=notify
+    self.snack=snack
+    
+    start()
+    
+    return MyFirstWidget()
+
+DndApp().run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

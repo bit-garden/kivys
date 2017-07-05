@@ -1,7 +1,0 @@
-#:kivy 1.0
-
-<MyFirstWidget>:
-  #MDRaisedButton:
-  #  text: "Open list bottom sheet"
-  spacing: 50 MDTextField:
-    hint:'test'
