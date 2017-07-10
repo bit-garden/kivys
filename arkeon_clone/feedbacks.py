@@ -1,11 +1,11 @@
 from jnius import autoclass, PythonJavaClass, java_method, cast
-from android import activity
+#from android import activity
 from android.runnable import run_on_ui_thread
 Toast = autoclass('android.widget.Toast')
-context = autoclass('org.renpy.android.PythonActivity').mActivity
+context = autoclass('org.kivy.android.PythonActivity').mActivity
 NotificationBuilder = autoclass('android.app.Notification$Builder')
-service = autoclass('org.renpy.android.PythonService').mService
-PythonActivity = autoclass('org.renpy.android.PythonActivity')
+#service = autoclass('org.kivy.android.PythonActivity').mService
+PythonActivity = autoclass('org.kivy.android.PythonActivity')
 Notification = autoclass('android.app.Notification')
 
 @run_on_ui_thread

@@ -1,0 +1,22 @@
+JVM exception occurred: Can't create handler inside thread that has not called Looper.prepare()
+Error in /sdcard/kivy/runner.py on line 23
+Error in ./main.py on line 147
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/app.py on line 828
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/base.py on line 504
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/core/window/window_sdl2.py on line 663
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/core/window/window_sdl2.py on line 405
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/base.py on line 342
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/base.py on line 327
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/base.py on line 293
+Error in kivy/_event.pyx on line 718
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/uix/behaviors/button.py on line 179
+Error in kivy/_event.pyx on line 714
+Error in kivy/_event.pyx on line 1225
+Error in kivy/_event.pyx on line 1109
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/lang/builder.py on line 64
+Error in <string> on line 18
+Error in ./feedbacks.py on line 35
+Error in jnius/jnius_export_class.pxi on line 906
+Error in jnius/jnius_export_class.pxi on line 637
+Error in jnius/jnius_export_class.pxi on line 803
+Error in jnius/jnius_utils.pxi on line 93

@@ -1,0 +1,5 @@
+dlopen failed: "/data/data/org.test.myapp/files/app/crystax_python/site-packages/PIL/_imaging.so" is 64-bit instead of 32-bit
+Error in /sdcard/kivy/runner.py on line 23
+Error in ./main.py on line 8
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/atlas.py on line 268
+Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/PIL/Image.py on line 56

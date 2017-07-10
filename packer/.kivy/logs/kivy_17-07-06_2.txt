@@ -1,0 +1,5 @@
+[INFO              ] Logger: Record log in /storage/emulated/0/kivy/packer/.kivy/logs/kivy_17-07-06_2.txt
+[INFO              ] Kivy: v1.9.1
+[INFO              ] Python: v2.7.2 (default, Mar 20 2016, 23:30:13) 
+[GCC 4.8]
+[INFO              ] Atlas: create an 1024x1024 rgba image

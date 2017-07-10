@@ -1,0 +1,10 @@
+[INFO              ] Logger: Record log in /storage/emulated/0/kivy/packer/.kivy/logs/kivy_17-07-07_3.txt
+[INFO              ] Kivy: v1.9.1
+[INFO              ] Python: v2.7.2 (default, Mar 20 2016, 23:30:13) 
+[GCC 4.8]
+[WARNING           ] stderr: Traceback (most recent call last):
+[WARNING           ] stderr:   File "main.py", line 8, in <module>
+[WARNING           ] stderr:     Atlas.create('test',os.listdir('.'),1024)
+[WARNING           ] stderr:   File "/home/tito/code/python-for-android-upstream/build/python-install/lib/python2.7/site-packages/kivy/atlas.py", line 282, in create
+[WARNING           ] stderr:   File "/home/tito/code/python-for-android-upstream/build/python-install/lib/python2.7/site-packages/PIL/Image.py", line 1980, in open
+[WARNING           ] stderr: IOError: cannot identify image file

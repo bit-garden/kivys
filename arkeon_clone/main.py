@@ -108,10 +108,6 @@ RelativeLayout:
     #pos:(0,-self.height+root.height)
     MDCard:
       id:frame
-    StackLayout:
-      pos:50,-50
-      MDSwitch:
-        size_hint:None,None
         
 <IconButton>:
   source: 'icon.png'
@@ -119,7 +115,7 @@ RelativeLayout:
   size:200,200
   #pos: root.width/2-self.width/2,root.height/2-self.height/2
   ripple_scale:1.2
-  #on_release: app.snack('squeek squeek squeek squeek')
+  on_release: app.toast('squeek squeek squeek squeek')
 '''
 
 class IconButton(ButtonBehavior, CircularRippleBehavior, Image):
