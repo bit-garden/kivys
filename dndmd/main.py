@@ -419,8 +419,9 @@ def start():
         #pass
         game.add(eGrid(x,y,ground_textures))
   
-  game.add(eGrid(2,3,[ground_tex['water1']],
-    can_enter=lambda _en,_dir:False
+  game.add(eGrid(2,3,[ground_tex['grass1']],
+    can_exit=lambda _en,_dir:_dir==sGrid.SOUTH,
+    on_enter=lambda _en,_dir:snack('trapppedededed')
   ))
   game.add(eCharacter(1,1,[test_tex['nuRabbit']]))
   
@@ -436,8 +437,9 @@ from kivy.atlas import Atlas
 
 from kivy.metrics import dp
 
+from kivy.uix.widget import Widget
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scatterlayout import ScatterLayout
 from kivy.uix.image import Image
 from kivy.uix.behaviors import ButtonBehavior
@@ -448,19 +450,59 @@ from kivymd.card import MDCard
 from kivymd.selectioncontrols import MDSwitch
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.ripplebehavior import RectangularRippleBehavior
+from kivymd.navigationdrawer import NavigationLayout
+from kivymd.navigationdrawer import MDNavigationDrawer
+from kivymd.navigationdrawer import NavigationDrawerToolbar
+from kivymd.textfields import MDTextField
+from kivymd.label import MDLabel
 
 from feedbacks import toast, notify
 
 kv = '''
-RelativeLayout:
-  spacing: 50
-  padding:[50,50,50,50]
-  ScatterLayout:
-    size_hint:None,None
-    size: 15*dp(64),15*dp(64)
-    #pos:(0,-self.height+root.height)
-    MDCard:
-      id:frame
+NavigationLayout:
+  MDNavigationDrawer:
+    id:drawer
+    #NavigationDrawerToolbar:
+    #  title: "Navigation Drawer"
+    BoxLayout:
+      orientation: 'vertical'
+      padding:dp(8),dp(8),dp(8),dp(8)
+      MDTextField:
+        multiline: True
+        hint_text: 'Name'
+        text:'Dakun Skye'
+      BoxLayout:
+        orientation: 'horizontal'
+        size_hint:1,None
+        MDLabel:
+          font_style: 'Subhead'
+          theme_text_color: 'Primary'
+          text: "Some Option"
+          size_hint:None,None
+          width:self.parent.width-dp(48)
+        
+        MDSwitch:
+          size_hint:None,None
+          width:dp(32)
+          on_active:app.snack(self.active)
+      Widget:
+  RelativeLayout:
+    orientation: 'vertical'
+    RelativeLayout:
+      ScatterLayout:
+        size_hint:None,None
+        size: 15*dp(64),15*dp(64)
+        #pos:(0,-self.height+root.height)
+        MDCard:
+          id:frame
+    
+    Toolbar:
+      title: 'DnD_MD'
+      md_bg_color: app.theme_cls.primary_color
+      background_palette: 'Primary'
+      background_hue: '500'
+      pos_hint:{'top':1}
+      left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
         
 <mappable_interactive>:
   #source: 'icon.png'

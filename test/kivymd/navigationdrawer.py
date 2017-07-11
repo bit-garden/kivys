@@ -63,10 +63,10 @@ Builder.load_string("""
         id: _header_container
         size_hint_y: None
         height: _header_container.minimum_height
-    #ScrollView:
-    #    do_scroll_x: False
-    #    MDList:
-    #        id: list
+    ScrollView:
+        do_scroll_x: False
+        MDList:
+            id: list
 
 <NavigationDrawerIconButton>:
     theme_text_color: 'Primary' if not root._active else 'Custom' if root.use_active else 'Primary'
