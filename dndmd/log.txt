@@ -1,23 +1,7 @@
-Parser: File "<inline>", line 14:
-...
-     12:        hint_text: "Multi-line text"
-     13:      StackLayout:
->>   14:        orientation: 'horizontal'
-     15:        MDLabel:
-     16:          font_style: 'Body1'
-...
-ValueError: StackLayout.orientation is set to an invalid option 'horizontal'. Must be one of: ['lr-tb', 'tb-lr', 'rl-tb', 'tb-rl', 'lr-bt', 'bt-lr', 'rl-bt', 'bt-rl']
-  File "/data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/lang/builder.py", line 605, in _apply_rule
-    setattr(widget_set, key, value)
-  File "kivy/weakproxy.pyx", line 33, in kivy.weakproxy.WeakProxy.__setattr__ (kivy/weakproxy.c:1471)
-  File "kivy/properties.pyx", line 478, in kivy.properties.Property.__set__ (kivy/properties.c:5572)
-  File "kivy/properties.pyx", line 513, in kivy.properties.Property.set (kivy/properties.c:6352)
-  File "kivy/properties.pyx", line 504, in kivy.properties.Property.set (kivy/properties.c:6173)
-  File "kivy/properties.pyx", line 1230, in kivy.properties.OptionProperty.check (kivy/properties.c:18444)
-
+list.remove(x): x not in list
 Error in /sdcard/kivy/runner.py on line 22
-Error in ./main.py on line 560
+Error in ./main.py on line 598
 Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/app.py on line 802
-Error in ./main.py on line 552
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/lang/builder.py on line 382
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/lang/builder.py on line 612
+Error in ./main.py on line 592
+Error in ./main.py on line 454
+Error in ./Entity/__init__.py on line 55

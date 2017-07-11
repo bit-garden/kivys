@@ -118,8 +118,35 @@ class sMap(Entity.System):
     for _ in self.nodes:
       if _[0].updated:
         _[2].data.pos = (_[0].x*self.scale.data,_[0].y*self.scale.data)
-        #_[2].data.y = _[0].y*self.scale
+      if _[1].updated:
+        _[2].data.texture=_[1].data[0]
+
+#placeholder
+class cAnim(Entity.Component):pass
+class sAnim(Entity.System):
+  def __init__(self,_rate,_updater):
+    super(sAnim,self).__init__()
+    self.component_filter=[cAnim]
+    self.rate=_rate
+    self.updater=_updater
+    self.objs={}
+  
+  def add(self,_comp):
+    #self.nodes.append(_comp.parent.cmappable.textures)
+    self.objs[_comp.parent]=Entity.cUpdate(lambda _:self.flip(_comp.parent),self.rate,True)
+    self.updater.add(self.objs[_comp.parent])
     
+  def remove(self,_comp):
+    #self.nodes.remove(_comp.parent.cmappable.textures)
+    self.updater.remove(self.objs[_comp.parent])
+    del self.objs[_comp.parent]
+    
+  def flip(self,_data):
+    if len(_data.cmappable.textures.data)>1:
+      _temp = _data.cmappable.textures.data.pop(0)
+      _data.cmappable.textures.data.append(_temp)
+      _data.cmappable.textures.updated=True
+      
 class sGrid(Entity.System):
   #Static directions
   NORTH=0b1
@@ -275,7 +302,7 @@ class eGrid(Entity.Entity):
     super(eGrid,self).__init__()
     
     
-    self.cmappable=cMap([],x,y,mapper.scale,
+    self.cmappable=cMap(_textures,x,y,mapper.scale,
         texture=_textures[0]
       )
       
@@ -283,7 +310,8 @@ class eGrid(Entity.Entity):
     
     self.components=[
       self.cmappable,
-      self.cgrid
+      self.cgrid,
+      cAnim()
     ]
     
 class eMove_to(Entity.Entity):
@@ -296,7 +324,8 @@ class eMove_to(Entity.Entity):
     self.cmappable.widget.data.opacity=0.75
     self.components=(
       self.cmappable,
-      #cTouch(self.cmappable.pix, tap=self.tap)
+      #cTouch(self.cmappable.pix, tap=self.tap),
+      cAnim()
     )
 
   def tap(self,_ev):
@@ -316,7 +345,8 @@ class eCharacter(Entity.Entity):
     
     self.components=[
       Entity.cUpdate(self.tick,5000,True),
-      self.cmappable
+      self.cmappable,
+      cAnim()
     ]
 
     
@@ -383,7 +413,7 @@ class sCleanup(Entity.System):
 
 
 timer,mapper,game=None,None,None
-grid=None
+grid,sanim=None,None
 
 #start timer loop
 #@mainthread
@@ -391,17 +421,19 @@ def start():
   Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.1)
   
   global timer,mapper,game
-  global grid
+  global grid,sanim
   
   timer = Entity.sUpdate()
   mapper = sMap(root.ids.frame)
   grid = sGrid(15,15)
+  sanim=sAnim(500,timer)
   
   game = Entity.Engine([
     timer,
     grid,
     mapper,
-    sCleanup()
+    sCleanup(),
+    sanim
   ])
   
   test_map = eval(open('assets/maps/test.txt').read())[::-1]
@@ -418,8 +450,9 @@ def start():
       elif test_map[y][x]=='g':
         #pass
         game.add(eGrid(x,y,ground_textures))
+        
   
-  game.add(eGrid(2,3,[ground_tex['grass1']],
+  game.add(eGrid(2,3,[ground_tex['grass1'],ground_tex['water1']],
     can_exit=lambda _en,_dir:_dir==sGrid.SOUTH,
     on_enter=lambda _en,_dir:snack('trapppedededed')
   ))
