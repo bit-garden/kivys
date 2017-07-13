@@ -376,6 +376,7 @@ class eCharacter(Entity.Entity):
         self.moves.append(eMove_to(_[0],_[1],mapper.scale,self.move_to))
     for _ in self.moves:
       game.add(_)
+    snack('rrady')
 
   def _filter(self,x,y,_nGrid):
     return _nGrid.can_enter(self,sGrid.MOVE)
