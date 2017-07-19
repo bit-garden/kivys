@@ -1,17 +1,5 @@
 import Entity
-from kivy.clock import mainthread as ui
-
-
-def thread(func):
-  from threading import Thread
-  from functools import wraps
-  
-  @wraps(func)
-  def async_func(*args, **kwargs):
-    func_hl = Thread(target = func, args = args, kwargs = kwargs)
-    func_hl.start()
-    return func_hl
-  return async_func
+from Entity import async,sync
 
 #data is not used here
 #reprisents cells of the grid
@@ -355,7 +343,7 @@ class eCharacter(Entity.Entity):
     #snack(str(root.width))
     pass
   
-  @thread
+  @async
   def tap(self, _ev):
     if not self.moves:
       self.moves=[]
@@ -369,14 +357,13 @@ class eCharacter(Entity.Entity):
         game.remove(_)
       self.moves=None
       
-  @ui
+  @sync
   def _add_moves(self):
     for _ in self.paths:
       if _ !=(self.cmappable.pos.x,self.cmappable.pos.y):
         self.moves.append(eMove_to(_[0],_[1],mapper.scale,self.move_to))
     for _ in self.moves:
       game.add(_)
-    snack('rrady')
 
   def _filter(self,x,y,_nGrid):
     return _nGrid.can_enter(self,sGrid.MOVE)
@@ -490,8 +477,6 @@ from kivymd.navigationdrawer import NavigationDrawerToolbar
 from kivymd.textfields import MDTextField
 from kivymd.label import MDLabel
 
-from feedbacks import toast, notify
-
 kv = '''
 NavigationLayout:
   MDNavigationDrawer:
@@ -530,13 +515,13 @@ NavigationLayout:
         MDCard:
           id:frame
     
-    Toolbar:
-      title: 'DnD_MD'
-      md_bg_color: app.theme_cls.primary_color
-      background_palette: 'Primary'
-      background_hue: '500'
-      pos_hint:{'top':1}
-      left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
+    #Toolbar:
+    #  title: 'DnD_MD'
+    #  md_bg_color: app.theme_cls.primary_color
+    #  background_palette: 'Primary'
+    #  background_hue: '500'
+    #  pos_hint:{'top':1}
+    #  left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
         
 <mappable_interactive>:
   #source: 'icon.png'
@@ -582,8 +567,6 @@ class DndApp(App):
   theme_cls = ThemeManager()
   def build(self):
     global root
-    self.toast=toast
-    self.notify=notify
     self.snack=snack
     self.theme_cls.theme_style = 'Dark'
     
