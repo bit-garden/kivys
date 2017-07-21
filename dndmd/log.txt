@@ -1,7 +1,5 @@
-list.remove(x): x not in list
+'NoneType' object has no attribute 'width'
 Error in /sdcard/kivy/runner.py on line 22
-Error in ./main.py on line 598
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/app.py on line 802
-Error in ./main.py on line 592
-Error in ./main.py on line 454
-Error in ./Entity/__init__.py on line 55
+Error in ./main.py on line 468
+Error in ./kivymd/theming.py on line 13
+Error in ./kivymd/material_resources.py on line 11

@@ -249,12 +249,15 @@ class sGrid(Entity.System):
     
     if _paths is not None and (x,y) not in _paths:
       _paths.append((x,y))
-    
+
+
     if (x,y) not in results:
       results[(x,y)]=_paths
     else:
       if len(_paths) < len(results[(x,y)]):
         results[(x,y)]=_paths
+      else:
+        return results
         
     
     if _paths is None:
@@ -343,7 +346,7 @@ class eCharacter(Entity.Entity):
     #snack(str(root.width))
     pass
   
-  @async
+  #@async
   def tap(self, _ev):
     if not self.moves:
       self.moves=[]
@@ -357,7 +360,7 @@ class eCharacter(Entity.Entity):
         game.remove(_)
       self.moves=None
       
-  @sync
+  #@sync
   def _add_moves(self):
     for _ in self.paths:
       if _ !=(self.cmappable.pos.x,self.cmappable.pos.y):
@@ -442,7 +445,7 @@ def start():
   
   game.add(eGrid(2,3,[ground_tex['grass1'],ground_tex['water1']],
     can_exit=lambda _en,_dir:_dir==sGrid.SOUTH,
-    on_enter=lambda _en,_dir:snack('trapppedededed')
+    on_enter=lambda _en,_dir:snack('traped. You can only escape south')
   ))
   game.add(eCharacter(1,1,[test_tex['nuRabbit']]))
   
