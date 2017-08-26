@@ -38,6 +38,29 @@ class nGrid(Entity.Node):
     if not contents:
       contents = list()
     self.contents = contents
+    
+class nPeice(Entity.Node):
+  def __init__(self,_kind,_dir):
+    self.data=[_kind,_dir]
+    
+  @property
+  def kind(self): return self.data[0]
+  @kind.setter
+  def kind(self, value): 
+    self.updated=True
+    self.data[0] = value
+    
+  @property
+  def dir(self): return self.data[1]
+  @dir.setter
+  def dir(self, value): 
+    self.updated=True
+    self.data[1] = value
+    
+class cPeice(Entity.Component):
+  def __init__(self,*args,**kwargs):
+    super().__init__()
+    self.npeice=nPeice(*args,**kwargs)
 
 
 class cGrid(Entity.Component):
@@ -56,7 +79,7 @@ class cMap_interactive(Entity.Component):
     self.textures=Entity.Node(_textures)
     
     self.widget=Entity.Node(mappable_interactive(
-                            pos=(x*scale.data,y*scale.data),
+                            pos=(x*scale.data,y*scale.data+(0,scale.data/2)[x%2==0]),
                             size=(scale.data,scale.data),
                             **kwargs
                            ))
@@ -70,7 +93,7 @@ class cMap(Entity.Component):
     self.textures=Entity.Node(_textures)
     
     self.widget=Entity.Node(mappable(
-                            pos=(x*scale.data,y*scale.data),
+                            pos=(x*scale.data,y*scale.data+(0,scale.data/2)[x%2==0]),
                             size=(scale.data,scale.data),
                             **kwargs
                            ))
@@ -105,7 +128,7 @@ class sMap(Entity.System):
   def tick(self, _delta = 0):
     for _ in self.nodes:
       if _[0].updated:
-        _[2].data.pos = (_[0].x*self.scale.data,_[0].y*self.scale.data)
+        _[2].data.pos = (_[0].x*self.scale.data,_[0].y*self.scale.data+(0,self.scale.data/2)[_[0].x%2==0])
       if _[1].updated:
         _[2].data.texture=_[1].data[0]
 
@@ -265,11 +288,24 @@ class sGrid(Entity.System):
       self.get_paths(x,y-1,r,results,condition,list())
       self.get_paths(x+1,y,r,results,condition,list())
       self.get_paths(x,y+1,r,results,condition,list())
+      if x%2==0:
+        self.get_paths(x+1,y+1,r,results,condition,list())
+        self.get_paths(x-1,y+1,r,results,condition,list())
+      else:
+        self.get_paths(x+1,y-1,r,results,condition,list())
+        self.get_paths(x-1,y-1,r,results,condition,list())
+
     else:
       self.get_paths(x-1,y,r,results,condition,_paths[:])
       self.get_paths(x,y-1,r,results,condition,_paths[:])
       self.get_paths(x+1,y,r,results,condition,_paths[:])
       self.get_paths(x,y+1,r,results,condition,_paths[:])
+      if x%2==0:
+        self.get_paths(x+1,y+1,r,results,condition,_paths[:])
+        self.get_paths(x-1,y+1,r,results,condition,_paths[:])
+      else:
+        self.get_paths(x+1,y-1,r,results,condition,_paths[:])
+        self.get_paths(x-1,y-1,r,results,condition,_paths[:])
       
     return results
   
@@ -333,11 +369,14 @@ class eCharacter(Entity.Entity):
         on_release=self.tap,
         texture=_textures[0]
       )
+      
+    self.peice=cPeice('pawn','0')
     
     self.components=[
       Entity.cUpdate(self.tick,5000,True),
       self.cmappable,
-      cAnim()
+      cAnim(),
+      self.peice
     ]
 
     
@@ -351,7 +390,7 @@ class eCharacter(Entity.Entity):
     if not self.moves:
       self.moves=[]
       
-      self.paths=grid.get_paths(self.cmappable.pos.x,self.cmappable.pos.y,8,{},self._filter)
+      self.paths=grid.get_paths(self.cmappable.pos.x,self.cmappable.pos.y,4,{},self._filter)
     
       self._add_moves()
     
@@ -372,13 +411,13 @@ class eCharacter(Entity.Entity):
     return _nGrid.can_enter(self,sGrid.MOVE)
     
   def move_to(self,ev,x,y):
-    #grid.tele(self,(x,y))
+    grid.tele(self,(x,y))
     
-    _dirs = grid.to_dir(self.cmappable.pos, self.paths[(x,y)])
+    '''_dirs = grid.to_dir(self.cmappable.pos, self.paths[(x,y)])
     
     for _ in _dirs:
       if not grid.move(self,_):
-        break
+        break'''
     for _ in self.moves:
       game.remove(_)
     self.moves=None
@@ -443,11 +482,11 @@ def start():
         game.add(eGrid(x,y,ground_textures))
         
   
-  game.add(eGrid(2,3,[ground_tex['grass1'],ground_tex['water1']],
+  '''game.add(eGrid(2,3,[ground_tex['grass1'],ground_tex['water1']],
     can_exit=lambda _en,_dir:_dir==sGrid.SOUTH,
     on_enter=lambda _en,_dir:snack('traped. You can only escape south')
-  ))
-  game.add(eCharacter(1,1,[test_tex['nuRabbit']]))
+  ))'''
+  game.add(eCharacter(3,3,[test_tex['nuRabbit']]))
   
 
 ##################
@@ -481,6 +520,8 @@ from kivymd.textfields import MDTextField
 from kivymd.label import MDLabel
 
 kv = '''
+#: import ew kivy.uix.effectwidget
+
 NavigationLayout:
   MDNavigationDrawer:
     id:drawer
@@ -513,10 +554,12 @@ NavigationLayout:
     RelativeLayout:
       ScatterLayout:
         size_hint:None,None
-        size: 15*dp(64),15*dp(64)
+        size: 7*dp(64),11*dp(64)
         #pos:(0,-self.height+root.height)
-        MDCard:
-          id:frame
+        EffectWidget:
+          #effects: [ew.HorizontalBlurEffect(size=4.0)]
+          MDCard:
+            id:frame
     
     #Toolbar:
     #  title: 'DnD_MD'

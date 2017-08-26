@@ -1,0 +1,2 @@
+invalid syntax (main.py, line 95)
+Error in /sdcard/kivy/runner.py on line 24

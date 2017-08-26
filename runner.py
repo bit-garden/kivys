@@ -6,14 +6,16 @@ class TestApp(App):
     return Button(text='Hello World')
 
 TestApp().run()'''
-  
-project='dndmd'  
+
+project='lslw'
 
 import os
 os.chdir('/sdcard/kivy/'+project)
 
 import sys
 sys.path.append('/sdcard/kivy/'+project)
+
+sys.path.append('/sdcard/kivy/lib')
 
 import traceback
 
