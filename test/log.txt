@@ -1,5 +1,0 @@
-name 'start' is not defined
-Error in /sdcard/kivy/runner.py on line 22
-Error in ./main.py on line 45
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/app.py on line 802
-Error in ./main.py on line 39

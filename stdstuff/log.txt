@@ -1,0 +1,5 @@
+[Errno 2] No such file or directory: '/bin/sh'
+Error in /sdcard/kivy/runner.py on line 24
+Error in ./main.py on line 3
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/stdlib.zip/subprocess.py on line 950
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/stdlib.zip/subprocess.py on line 1540

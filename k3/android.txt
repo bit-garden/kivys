@@ -1,0 +1,3 @@
+title=ddd
+author=dakun
+orientation=landscape

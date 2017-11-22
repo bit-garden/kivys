@@ -1,8 +1,7 @@
-'utf-8' codec can't decode byte 0xc0 in position 0: invalid start byte
-Error in /sdcard/kivy/runner.py on line 22
-Error in ./main.py on line 601
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/app.py on line 828
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/base.py on line 504
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/core/window/window_sdl2.py on line 663
-Error in /data/user/0/org.test.myapp/files/app/crystax_python/site-packages/kivy/core/window/window_sdl2.py on line 419
-Error in kivy/core/window/_window_sdl2.pyx on line 413
+list index out of range
+Error in /sdcard/kivy/runner.py on line 24
+Error in ./main.py on line 627
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/site-packages/kivy/app.py on line 802
+Error in ./main.py on line 621
+Error in ./main.py on line 479
+Error in ./main.py on line 333

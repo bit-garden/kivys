@@ -1,0 +1,5 @@
+'NoneType' object has no attribute 'width'
+Error in /sdcard/kivy/runner.py on line 24
+Error in ./main.py on line 11
+Error in /sdcard/kivy/lib/kivymd/theming.py on line 13
+Error in /sdcard/kivy/lib/kivymd/material_resources.py on line 11

@@ -1,3 +1,5 @@
+import feedbacks
+
 import Entity
 from Entity import async,sync
 
@@ -506,7 +508,7 @@ NavigationLayout:
         MDSwitch:
           size_hint:None,None
           width:dp(32)
-          on_active:app.snack(self.active)
+          on_active:app.fb.toast(str(self.active))
       Widget:
   RelativeLayout:
     orientation: 'vertical'
@@ -571,6 +573,7 @@ class DndApp(App):
   def build(self):
     global root
     self.snack=snack
+    self.fb=feedbacks
     self.theme_cls.theme_style = 'Dark'
     
     root = Builder.load_string(kv)

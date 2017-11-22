@@ -31,7 +31,7 @@ class Wv(Widget):
         wvc = WebViewClient()
         webview.setWebViewClient(wvc)
         activity.setContentView(webview)
-        webview.loadUrl('http://localhost:8080/dnd/')
+        webview.loadUrl('https://inbox.google.com')
         
 class ServiceApp(App):
     def build(self):

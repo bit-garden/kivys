@@ -1,0 +1,7 @@
+name 'sws' is not defined
+Error in /sdcard/kivy/runner.py on line 24
+Error in ./main.py on line 116
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/site-packages/kivy/app.py on line 829
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/site-packages/kivy/app.py on line 837
+Error in kivy/_event.pyx on line 718
+Error in ./main.py on line 112

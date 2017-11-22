@@ -1,0 +1,23 @@
+#:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
+#:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
+#:import BoxLayout kivy.uix.boxlayout.BoxLayout
+#:import ScatterLayout kivy.uix.scatterlayout.ScatterLayout
+
+#:import MDCard kivymd.card.MDCard
+#:import MDRaisedButton kivymd.button.MDRaisedButton
+#:import MDTextField kivymd.textfields.MDTextField
+#:import MDSwitch kivymd.selectioncontrols.MDSwitch
+#:import MDLabel kivymd.label.MDLabel
+
+NavigationLayout: 
+  MDNavigationDrawer:
+    BoxLayout:
+      orientation: 'vertical'
+      padding:dp(8),dp(8),dp(8),dp(8)
+      id:drawer
+    BoxLayout:
+  BoxLayout:
+    id:frame
+    MDCard:
+      MDTextField:
+        hint_text:'Message'
