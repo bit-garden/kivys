@@ -1,7 +1,7 @@
 import feedbacks
 
 import Entity
-from Entity import async,sync
+from Entity import _async,sync
 
 #data is not used here
 #reprisents cells of the grid
@@ -348,7 +348,7 @@ class eCharacter(Entity.Entity):
     #snack(str(root.width))
     pass
   
-  @async
+  @_async
   def tap(self, _ev):
     if not self.moves:
       self.moves=[]

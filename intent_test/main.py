@@ -1,5 +1,5 @@
 import Entity
-from Entity import async,sync
+from Entity import _async,sync
 
 from kivy.lang import Builder
 from kivy.app import App
@@ -71,13 +71,15 @@ def start():
 
     _out+='alias %s="runapp %s"\n'%(name,runnable)
 
-    root.ids.frame.add_widget(
+    '''root.ids.frame.add_widget(
       MDRaisedButton(text=mApps.get(i).loadLabel(pm),
                       on_press=lambda ev:snack(mApps.get(i).loadLabel(pm)))
-    )
+    )'''
     
     if file_uri == None:
       root.ids.data.text = _out
+      a='hi'
+      root.ids.data.text+='{a}'
     
     
 

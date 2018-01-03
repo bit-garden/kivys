@@ -3,7 +3,7 @@ from functools import wraps
 
 entity_callback_queue=[]
 
-def async(func):
+def _async(func):
   @wraps(func)
   def async_func(*args, **kwargs):
     func_hl = Thread(target = func, args = args, kwargs = kwargs)

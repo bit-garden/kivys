@@ -1,0 +1,3 @@
+cannot import name 'async'
+Error in /sdcard/kivy/runner.py on line 24
+Error in ./main.py on line 2

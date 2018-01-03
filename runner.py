@@ -7,7 +7,7 @@ class TestApp(App):
 
 TestApp().run()'''
 
-project='intent_test'
+project='rabbit_numbers'
 
 import os
 os.chdir('/sdcard/kivy/'+project)
