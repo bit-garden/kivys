@@ -1,7 +1,7 @@
 from threading import Thread
 from functools import wraps
 
-entity_callback_queue=[]
+entity_callback_queue = []
 
 def _async(func):
   @wraps(func)
@@ -16,7 +16,7 @@ def sync(func):
   @wraps(func)
   def sync_func(*args, **kwargs):
     def sync_callback(_dt):
-      func(*args,**kwargs)
+      func(*args, **kwargs)
     entity_callback_queue.append(sync_callback)
   return sync_func
 
@@ -25,15 +25,15 @@ def sync(func):
 class System:
   def __init__(self):
     #expected components
-    self.component_filter=[]
-    self.nodes=[]
-  def add(self,_component):
+    self.component_filter = []
+    self.nodes = []
+  def add(self, _component):
     pass # get the nodes to process
   
-  def remove(self,_component):
+  def remove(self, _component):
     pass # cleanup
   
-  def tick(self,_delta=0):
+  def tick(self, _delta = 0):
     pass # do update
 
 #Collections of components
