@@ -113,7 +113,7 @@ class Engine:
   # Tick all systems
   def tick(self, _delta = 0):
     # Pop all function calls that were synced during the last cycle.
-  while len(entity_callback_queue):
+    while len(entity_callback_queue):
       entity_callback_queue.pop(0)(_delta)
     for i in self.systems:
       i.tick(_delta)
