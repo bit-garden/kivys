@@ -1,7 +1,7 @@
 import Entity
 from Entity import _async, sync
 
-#Nodes{{{
+#Nodes
 #data is not used here
 #reprisents cells of the grid
 class nGrid(Entity.Node):
@@ -57,9 +57,8 @@ class nPeice(Entity.Node):
   def dir(self, value):
     self.updated = True
     self.data[1] = value
-#}}}
     
-#Components{{{
+#Components
 class cPeice(Entity.Component):
   def __init__(self, *args, **kwargs):
     super().__init__()
@@ -100,9 +99,11 @@ class cMap(Entity.Component):
                             size = (scale.data, scale.data),
                             **kwargs
                            ))
-    
-    
 
+#placeholder
+class cAnim(Entity.Component): pass
+
+#Systems
 class sMap(Entity.System):
   def __init__(self, _stage,
                     scale = 64):
@@ -134,12 +135,7 @@ class sMap(Entity.System):
         _[2].data.pos = (_[0].x*self.scale.data, _[0].y*self.scale.data+(0, self.scale.data/2)[_[0].x%2 == 0])
       if _[1].updated:
         _[2].data.texture = _[1].data[0]
-
-#placeholder
-class cAnim(Entity.Component): pass
-#}}}
-
-#System{{{
+        
 class sAnim(Entity.System):
   def __init__(self, _rate, _updater):
     super(sAnim, self).__init__()
@@ -329,9 +325,27 @@ class sGrid(Entity.System):
         _dirs.append(self.NORTH)
 
     return _dirs
-#}}}    
 
-#Entities{{{
+class sCleanup(Entity.System):
+  def __init__(self):
+    super(sCleanup, self).__init__()
+    self.component_filter = [cMap, cMap_interactive]
+    
+  def add(self, _comp):
+    self.nodes.append([_comp.pos,
+                       _comp.textures,
+                      ])
+  def remove(self, _comp):
+    self.nodes.remove([_comp.pos,
+                       _comp.textures,
+                      ])
+    
+  def tick(self, _delta = 0):
+    for _ in self.nodes:
+      for __ in _:
+        __.updated = False
+
+#Entities
 class eGrid(Entity.Entity):
   def __init__(self, x, y, _textures, **kwargs):
     super(eGrid, self).__init__()
@@ -430,25 +444,6 @@ class eCharacter(Entity.Entity):
       game.remove(_)
     self.moves = None
     
-class sCleanup(Entity.System):
-  def __init__(self):
-    super(sCleanup, self).__init__()
-    self.component_filter = [cMap, cMap_interactive]
-    
-  def add(self, _comp):
-    self.nodes.append([_comp.pos,
-                       _comp.textures,
-                      ])
-  def remove(self, _comp):
-    self.nodes.remove([_comp.pos,
-                       _comp.textures,
-                      ])
-    
-  def tick(self, _delta = 0):
-    for _ in self.nodes:
-      for __ in _:
-        __.updated = False
-#}}}
 
 timer, mapper, game = None, None, None
 grid, sanim         = None, None
@@ -496,8 +491,7 @@ def start():
   ))'''
   game.add(eCharacter(3, 3, [test_tex['nuRabbit']]))
   
-
-#Kivy stuff{{{
+#Kivy stuff
 from kivy.lang    import Builder
 
 from kivy.app     import App
@@ -631,4 +625,3 @@ class DndApp(App):
 app = DndApp()
 
 app.run()
-#}}}
