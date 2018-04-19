@@ -337,7 +337,7 @@ class eGrid(Entity.Entity):
     super(eGrid, self).__init__()
     
     
-    self.cmappable = cMap_interactive(_textures, x, y, mapper.scale,
+    self.cmappable = cMap(_textures, x, y, mapper.scale,
         texture = _textures[0]
       )
       

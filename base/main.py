@@ -125,12 +125,13 @@ class sWs(Entity.System):
       self.ws.send(str(_data))
 #}}}
 
-# Display snacks
+# Display snacks {{{
 @sync
 def snack(text):
   Snackbar(text = str(text)).show()
+#}}}
 
-# Root view 
+# Root view
 root = None
 
 # Kivy base class App {{{
