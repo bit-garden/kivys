@@ -8,7 +8,7 @@ class TestApp(App):
 TestApp().run()'''
 
 #project='intent_test'
-project='arkeon'
+project='base'
 
 import os
 os.chdir('/sdcard/kivy/'+project)

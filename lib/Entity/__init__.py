@@ -3,7 +3,7 @@ from functools import wraps
 
 entity_callback_queue = []
 
-# Async wrapper for offloading processes to the background.
+# Async wrapper for offloading processes to the background.{{{
 def _async(func):
   @wraps(func)
   def async_func(*args, **kwargs):
@@ -11,8 +11,9 @@ def _async(func):
     func_hl.start()
     return func_hl
   return async_func
+#}}}
   
-# Sync wrapper to add function calls to entity_callback_queue.
+# Sync wrapper to add function calls to entity_callback_queue.{{{
 def sync(func):
   @wraps(func)
   def sync_func(*args, **kwargs):
@@ -20,9 +21,9 @@ def sync(func):
       func(*args, **kwargs)
     entity_callback_queue.append(sync_callback)
   return sync_func
+#}}}
 
-
-# Processes that consistently tick in the same manor.
+# Processes that consistently tick in the same manor.{{{
 class System:
   def __init__(self):
     #expected components
@@ -36,27 +37,30 @@ class System:
 
   def tick(self, _delta = 0):
     pass # do update
+#}}}
 
-# Collections of components
+# Collections of components{{{
 class Entity:
   def __init__(self):
     # Is added to engine
     self.added = False
     self.components = []
+#}}}
 
 # Pieces of an Entity that contains nodes
 class Component:
   pass
 
-# Pieces of data shared between components and systems
+# Pieces of data shared between components and systems{{{
 class Node:
   def __init__(self, _data = None):
     self.updated = False
     self.data = _data
   def __repr__(self):
     return str(self.data)
+#}}}
 
-#Entry point to adding and removing entities to the structure
+#Entry point to adding and removing entities to the structure{{{
 class Engine:
   # Needs to have a list of systems that are used to process the data
   def __init__(self, _systems):
@@ -118,10 +122,13 @@ class Engine:
     for i in self.systems:
       i.tick(_delta)
     
+  # Short hand to getting lists of entities.
+  # You can supply either entity or component class to get a list of associated lists.
   def __getitem__(self, _index):
     return self.entities[_index]
+#}}}
 
-# Common entity tools
+# Common entity tools{{{
 class nUpdate(Node):
   def __init__(self, _on_update, _when, _repeat):
     super().__init__(_on_update)
@@ -226,3 +233,4 @@ class sUpdate(System):
               _.data(_delta)
               _.last += _.when
               _.done = True
+#}}}
