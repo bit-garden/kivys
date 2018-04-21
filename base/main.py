@@ -1,3 +1,4 @@
+# Misc {{{
 # Entity system to manage the systems.
 import Entity
 # Needed to juggle background process with main thread easily
@@ -5,16 +6,19 @@ from Entity import _async,sync
 
 # Websocket client library
 import websocket
+# }}}
 
-# Base imports for Kivy
+# Base imports for Kivy {{{
 from kivy.lang    import Builder
 from kivy.app     import App
 from kivy.metrics import dp
 from kivy.clock   import Clock
+# }}}
 
-#needed imports for Kivymd
+# Needed imports for Kivymd {{{
 from kivymd.theming  import ThemeManager
 from kivymd.snackbar import Snackbar
+# }}}
 
 # Global reference to game engine and web socket connection
 game = None
@@ -23,30 +27,6 @@ sws  = None
 # Entry point for main loop {{{
 def start():
   global game, sws
-
-  #root.ids.drawer.add_widget(BoxLayout())
-  
-  '''root.ids.frame.add_widget(
-    MDRaisedButton(
-      text='pop',
-      on_press=lambda _ev: 
-    )
-  )'''
-  
-  '''messagebox = MDTextField()
-  messagebox._hint_lbl.text='Message'
-  
-  root.ids.frame.add_widget(
-    messagebox
-  )
-
-  
-  root.ids.frame.add_widget(
-    MDRaisedButton(
-      text='Send',
-      on_press=lambda _ev: sws.send({'message':messagebox.text})
-    )
-  )'''
 
   # Make websocket system
   sws = sWs()
@@ -58,6 +38,8 @@ def start():
 
   # Start the loop process for the game.
   Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.1)
+  open('assets/map.txt')
+
 #}}}  
 
 # system Websocket {{{
@@ -124,6 +106,11 @@ class sWs(Entity.System):
     if self.ws is not None:
       self.ws.send(str(_data))
 #}}}
+
+def grid2dict(_str):
+  _in = _str.split('\n')
+  if _in.startswith('|-'):
+    print('test')
 
 # Display snacks {{{
 @sync
