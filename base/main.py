@@ -4,6 +4,8 @@ import Entity
 # Needed to juggle background process with main thread easily
 from Entity import _async,sync
 
+from Tables import *
+
 # Websocket client library
 import websocket
 # }}}
@@ -107,10 +109,6 @@ class sWs(Entity.System):
       self.ws.send(str(_data))
 #}}}
 
-def grid2dict(_str):
-  _in = _str.split('\n')
-  if _in.startswith('|-'):
-    print('test')
 
 # Display snacks {{{
 @sync
