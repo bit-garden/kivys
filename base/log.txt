@@ -1,6 +1,3 @@
-__init__() missing 1 required positional argument: '_debug'
+invalid syntax (__init__.py, line 288)
 Error in /sdcard/kivy/runner.py on line 25
-Error in ./main.py on line 166
-Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/site-packages/kivy/app.py on line 802
-Error in ./main.py on line 151
-Error in ./main.py on line 49
+Error in ./main.py on line 3

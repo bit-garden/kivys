@@ -40,6 +40,7 @@ class eButton(Entity.Entity):
       snack('held')
     if 'k' in _edges and 'k' in _keys:
       snack('k eat')
+      return set(['k'])
   def __init__(self):
     super().__init__()
     self.components = [Entity.cKey(

@@ -278,12 +278,14 @@ class sKey(System):
       if i not in self.keys and i in self.levels:
         self.levels.remove(i)
 
-    compare_keys = set(self.edges) | set(self.levels)
     _keys = set(self.keys)
+    _edges = set(self.edges)
+    _levels = set(self.levels)
+    compare_keys = _edges | _levels
 
     for i in reversed(self.nodes):
       if compare_keys & i.keys:
-        _ret = i.action(compare_keys & i.keys & set(self.keys), self.levels, self.edges)
+        _ret = i.action(compare_keys & i.keys & _keys, _levels & compare_keys, _edges & compare_keys)
         if _ret:
           compare_keys = compare_keys - _ret
     self.edges.clear()
