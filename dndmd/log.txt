@@ -1,5 +1,6 @@
-'NoneType' object has no attribute 'width'
-Error in /sdcard/kivy/runner.py on line 24
-Error in ./main.py on line 473
-Error in /sdcard/kivy/lib/kivymd/theming.py on line 13
-Error in /sdcard/kivy/lib/kivymd/material_resources.py on line 11
+[Errno 2] No such file or directory: 'assets/maps/test2.txt'
+Error in /sdcard/kivy/runner.py on line 25
+Error in ./main.py on line 590
+Error in /data/user/0/com.bitgarden.pythonkivy/files/app/crystax_python/site-packages/kivy/app.py on line 802
+Error in ./main.py on line 584
+Error in ./main.py on line 435

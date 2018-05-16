@@ -3,6 +3,8 @@ import feedbacks
 import Entity
 from Entity import _async,sync
 
+from Tables import Table
+
 #data is not used here
 #reprisents cells of the grid
 class nGrid(Entity.Node):
@@ -429,7 +431,8 @@ def start():
     sanim
   ])
   
-  test_map = eval(open('assets/maps/test.txt').read())[::-1]
+  #test_map = eval(open('assets/maps/test.txt').read())[::-1]
+  test_map = Table(open('assets/maps/test2.txt').read()).data[::-1]
   
   water_textures=[ground_tex['water1']]
   ground_textures=[ground_tex['grass1']]

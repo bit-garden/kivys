@@ -79,6 +79,8 @@ class Table:
 
     self.cols = 0
     _in = _str.split('\n')
+    _in = list(map(lambda e: e.replace('\\|','__bar__'), _in))
+
     # Trim the tail off if it is blank like in a direct file read
     if _in[-1] == '':
       _in = _in[:-1]
@@ -264,8 +266,6 @@ class Table:
           _out += '| '+' | '.join(i)+' |\n'
     return _out
   # }}}
-
-
 
 '''
 f = open('contacts.txt')
