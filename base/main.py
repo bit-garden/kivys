@@ -11,10 +11,12 @@ import websocket
 # }}}
 
 # Base imports for Kivy {{{
-from kivy.lang    import Builder
-from kivy.app     import App
-from kivy.metrics import dp
-from kivy.clock   import Clock
+from kivy.lang        import Builder
+from kivy.app         import App
+from kivy.metrics     import dp
+from kivy.clock       import Clock
+from kivy.core.window import Window
+from kivy.core.window import Keyboard
 # }}}
 
 # Needed imports for Kivymd {{{
@@ -25,22 +27,47 @@ from kivymd.snackbar import Snackbar
 # Global reference to game engine and web socket connection
 game = None
 sws  = None
+keys = None
 
+class eButton(Entity.Entity):
+  def onkey(self, _keys, _levels, _edges):
+    # only on press
+    if 'j' in _edges and 'j' in _keys:
+      snack('down')
+    elif 'j' in _edges:
+      snack('release')
+    elif 'j' in _levels:
+      snack('held')
+    if 'k' in _edges and 'k' in _keys:
+      snack('k eat')
+  def __init__(self):
+    super().__init__()
+    self.components = [Entity.cKey(
+      set(['j', 'k']),
+      self.onkey
+    )]
+
+    
 # Entry point for main loop {{{
 def start():
-  global game, sws
+  global game, sws, keys
 
   # Make websocket system
-  sws = sWs()
+  sws  = sWs()
+  keys = Entity.sKey(Window, Keyboard)
 
   # Make Entity Engine with websocket system ready to go.
   game = Entity.Engine([
-    sws
+    sws,
+    keys
   ])
+
+  game.add(eButton())
+  game.add(eButton())
 
   # Start the loop process for the game.
   Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.1)
-  open('assets/map.txt')
+  #open('assets/map.txt')
 
 #}}}  
 
@@ -116,6 +143,7 @@ def snack(text):
   Snackbar(text = str(text)).show()
 #}}}
 
+
 # Root view
 root = None
 
@@ -130,12 +158,17 @@ class SomeApp(App):
     root = Builder.load_file('main.kv')
     
     start() 
+
+    #Window.bind(on_key_down=self.key_action)
     
     return root
-    
+
   # Final escape to close websocket thread when the ui is closed.
   def on_stop(self):
     sws.stop()
+
+  def key_action(self, *args):
+    snack(Keyboard.keycode_to_string(None, args[1]))
 
 app = SomeApp()
 

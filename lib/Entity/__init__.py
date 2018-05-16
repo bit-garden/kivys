@@ -138,6 +138,16 @@ class nUpdate(Node):
     self.last = 0 # Last time that the timer had ticked
     self.cur = 0 # Current time on the timer.
 
+class nKeys(Node):
+  # _keys ('a','b','c')
+  # _action function
+  def __init__(self, _keys, _action):
+    super().__init__(_keys)
+    self._action = _action
+  @property
+  def keys(self): return self.data
+  @property
+  def action(self): return self._action
 
 # Common pieces to use.
 # 2d point of reference
@@ -200,7 +210,11 @@ class cUpdate(Component):
     super().__init__()
     self.update = nUpdate(_on_update, _when, _repeat)
 
-
+class cKey(Component):
+  def __init__(self, _keys, _action):
+    super().__init__()
+    self.keys = nKeys(_keys, _action)
+   
 
 # System to handle cUpdate component ticking.
 class sUpdate(System):
@@ -233,4 +247,72 @@ class sUpdate(System):
               _.data(_delta)
               _.last += _.when
               _.done = True
+
+
+
+class sKey(System):
+  def __init__(self, _window, _keyboard):
+    super().__init__()
+    self.keyboard = _keyboard
+    self.component_filter = [cKey]
+    _window.bind(on_key_down=self.key_action_down)
+    _window.bind(on_key_up=self.key_action_up)
+    self.levels    = [] # Keys held down since last cycle
+    self.edges     = [] # Keys just changed, either pressed or unpressed
+    self.keys      = [] # Keys currently pressed.
+    self.modifiers = [] # Modifiers like shift and ctrl
+    '''
+    Keys just pressed will show in edges, and keys
+    Keys just unpressed will show in edges but not keys
+    These 2 facts will help identify key press and release events
+    '''
+
+  def add(self, _comp):
+    self.nodes.append(_comp.keys)
+  def remove(self, _comp):
+    self.nodes.remove(_comp.keys)
+    
+  def tick(self, _delta = 0):
+    self.levels.extend([i for i in self.edges if i in self.keys])
+    for i in self.edges:
+      if i not in self.keys and i in self.levels:
+        self.levels.remove(i)
+
+    compare_keys = set(self.edges) | set(self.levels)
+    _keys = set(self.keys)
+
+    for i in reversed(self.nodes):
+      if compare_keys & i.keys:
+        _ret = i.action(compare_keys & i.keys & set(self.keys), self.levels, self.edges)
+        if _ret:
+          compare_keys = compare_keys - _ret
+    self.edges.clear()
+
+  def key_action_down(self, *args):
+    _event = self.keyboard.keycode_to_string(None, args[1])
+    if _event:
+      if _event not in self.keys:
+        self.keys.append(_event)
+        if _event not in self.edges:
+          self.edges.append(_event)
+      
+
+  def key_action_up(self, *args):
+    _event = self.keyboard.keycode_to_string(None, args[1])
+    if _event:
+      if _event in self.keys:
+        self.keys.remove(_event)
+        if _event not in self.edges:
+          self.edges.append(_event)
+      
+
+    """_keys = {
+      'j': lambda: snack('pop'),
+      'j shift': lambda: snack('shifted pop'),
+      'j ctrl': lambda: snack('ctrl pop'),
+      'j shift ctrl': lambda: snack('shifted control pop'),
+    }"""
+    # readable letter 3
+    # modifier 4
+
 #}}}

@@ -275,8 +275,8 @@ class sGrid(Entity.System):
       
     return results
   
-  def to_dir(self,_start, _coords):
-    _path=[(_start.x,_start.y)]+_coords
+  def to_dir(self, _start, _coords):
+    _path = [(_start.x, _start.y)]+_coords
     _dirs = []
     for _ in range(len(_path)-1):
       if _path[_][0] > _path[_+1][0]:
