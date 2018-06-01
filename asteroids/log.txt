@@ -1,0 +1,3 @@
+cannot import name 'Scatter'
+Error in /sdcard/kivy/runner.py on line 25
+Error in ./main.py on line 23

@@ -125,10 +125,11 @@ class Table:
     # As dictionary {{{
     else:
       # Short references to use for searches
-      self._cols = {}
-      self._rows = []
+      self._cols    = {}
+      self._rows    = []
+      self._indices = []
       self._top_pad = False
-      self.data = [self._rows, self._cols]
+      self.data     = [self._rows, self._cols]
 
       # Loop over the lines
       for i in _in:
@@ -172,6 +173,7 @@ class Table:
             self._top_pad = True
           else:
             self._rows.append({'pad':'__pad__'})
+      self._indices = [i for i, x in enumerate(self._rows) if 'pad' not in x]
     # }}}
 
   # Returns neat tables with padding {{{
@@ -254,17 +256,33 @@ class Table:
     _out = ''
     if not self.as_list:
       _out = '| '+' | '.join(self.headers)+' |\n'
-      _out += '|-|\n'
       for i in self._rows:
-        _out += '| '+' | '.join(i.values())+' |\n'
+        if 'pad' in i:
+          _out += '|-|\n'
+        else:
+          _out += '| '+' | '.join(i.values())+' |\n'
     else:
       if self.cols == 1:
         for i in self.data:
-          _out += '| %s |\n'%i
+          if i == '__pad__':
+            _out += '|-|\n'
+          else:
+            _out += '| %s |\n'%i
       else:
         for i in self.data:
-          _out += '| '+' | '.join(i)+' |\n'
+          if i[0] == '__pad__':
+            _out += '|-|\n'
+          else:
+            _out += '| '+' | '.join(i)+' |\n'
     return _out
+
+  #index of
+  def io(self, _col, _target):
+    return self._indices[self._cols[_col].index(_target)]
+
+  #row of
+  def ro(self, _col, _target):
+    return self._rows[self._indices[self._cols[_col].index(_target)]]
   # }}}
 
 '''

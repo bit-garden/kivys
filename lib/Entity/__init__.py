@@ -257,14 +257,14 @@ class sKey(System):
     self.component_filter = [cKey]
     _window.bind(on_key_down=self.key_action_down)
     _window.bind(on_key_up=self.key_action_up)
-    self.levels    = [] # Keys held down since last cycle
-    self.edges     = [] # Keys just changed, either pressed or unpressed
-    self.keys      = [] # Keys currently pressed.
-    self.modifiers = [] # Modifiers like shift and ctrl
+    self.levels    = set() # Keys held down since last cycle
+    self.edges     = set() # Keys just changed, either pressed or unpressed
+    self.keys      = set() # Keys currently pressed.
+    self.last_keys = set() # Keys tracked between cycles
     '''
-    Keys just pressed will show in edges, and keys
-    Keys just unpressed will show in edges but not keys
-    These 2 facts will help identify key press and release events
+    edges - keys & set(key) = on release
+    edges & keys & set(key) = on press
+    levels & set(key)       = held
     '''
 
   def add(self, _comp):
@@ -273,48 +273,43 @@ class sKey(System):
     self.nodes.remove(_comp.keys)
     
   def tick(self, _delta = 0):
-    self.levels.extend([i for i in self.edges if i in self.keys])
-    for i in self.edges:
-      if i not in self.keys and i in self.levels:
-        self.levels.remove(i)
+    # xor   abc ^ cde = abde
+    self.edges = self.keys ^ self.last_keys | self.edges
 
-    _keys = set(self.keys)
-    _edges = set(self.edges)
-    _levels = set(self.levels)
-    compare_keys = _edges | _levels
+    # and   abc & cde = c
+    self.levels = self.keys & self.last_keys
+
+    self.last_keys = self.keys.copy()
+
+    # list of all involved keys within the event
+    compare_keys = self.edges | self.levels
 
     for i in reversed(self.nodes):
       if compare_keys & i.keys:
-        _ret = i.action(compare_keys & i.keys & _keys, _levels & compare_keys, _edges & compare_keys)
+        _ret = i.action(compare_keys & i.keys & self.keys, self.levels & compare_keys, self.edges & compare_keys)
         if _ret:
           compare_keys = compare_keys - _ret
+
     self.edges.clear()
 
   def key_action_down(self, *args):
     _event = self.keyboard.keycode_to_string(None, args[1])
     if _event:
-      if _event not in self.keys:
-        self.keys.append(_event)
-        if _event not in self.edges:
-          self.edges.append(_event)
-      
+      _event = set(_event)
+      self.keys |= _event
 
   def key_action_up(self, *args):
     _event = self.keyboard.keycode_to_string(None, args[1])
     if _event:
-      if _event in self.keys:
-        self.keys.remove(_event)
-        if _event not in self.edges:
-          self.edges.append(_event)
-      
+      _event = set(_event)
+      self.keys -= _event
+      self.edges |= _event
 
-    """_keys = {
-      'j': lambda: snack('pop'),
-      'j shift': lambda: snack('shifted pop'),
-      'j ctrl': lambda: snack('ctrl pop'),
-      'j shift ctrl': lambda: snack('shifted control pop'),
-    }"""
-    # readable letter 3
-    # modifier 4
+  def fake_down(self, _keys):
+    self.keys |= _keys
+
+  def fake_up(self, _keys):
+    self.keys -= _keys
+    self.edges |= _keys
 
 #}}}

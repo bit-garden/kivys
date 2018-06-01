@@ -1,0 +1,45 @@
+#:import NavigationLayout   kivymd.navigationdrawer.NavigationLayout
+#:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
+#:import BoxLayout          kivy.uix.boxlayout.BoxLayout
+#:import ScatterLayout      kivy.uix.scatterlayout.ScatterLayout
+
+#:import MDCard         kivymd.card.MDCard
+#:import MDRaisedButton kivymd.button.MDRaisedButton
+#:import MDTextField    kivymd.textfields.MDTextField
+#:import MDSwitch       kivymd.selectioncontrols.MDSwitch
+#:import MDLabel        kivymd.label.MDLabel
+
+NavigationLayout: 
+  # Sidebar {{{
+  MDNavigationDrawer:
+    BoxLayout:
+      orientation: 'vertical'
+      padding: dp(8), dp(8), dp(8), dp(8)
+      id: drawer
+    BoxLayout:
+  # }}}
+
+  # Main frame {{{
+  BoxLayout:
+    MDCard:
+      id: frame
+      #MDRaisedButton:
+      #  id:test
+      #  text: 'Ember semper rose skye ok'
+      #  on_touch_down: app.snack('Emma!!!')
+      #MDTextField:
+      #  id: test
+      #  hint_text: 'Message'
+  # }}}
+
+
+
+<mappable_interactive>:
+  #source: 'icon.png'
+  size_hint:None,None
+  allow_stretch:True
+  #pos: root.width/2-self.width/2,root.height/2-self.height/2
+  ripple_scale:1.5
+  #on_release: app.snack('squeek squeek squeek squeek')
+  size: dp(self.texture.size[0]*5), dp(self.texture.size[1]*5)
+  rotation: 45
