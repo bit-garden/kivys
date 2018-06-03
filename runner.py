@@ -7,8 +7,8 @@ class TestApp(App):
 
 TestApp().run()'''
 
-project='intent_test'
-#project='asteroids'
+#project='intent_test'
+project='asteroids'
 
 import os
 os.chdir('/sdcard/kivy/'+project)

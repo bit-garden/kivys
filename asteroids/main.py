@@ -1,4 +1,3 @@
-# Misc {{{
 # Entity system to manage the systems.
 import Entity
 # Needed to juggle background process with main thread easily
@@ -8,9 +7,7 @@ from Tables import *
 
 # Websocket client library
 import websocket
-# }}}
 
-# Base imports for Kivy {{{
 from kivy.lang          import Builder
 from kivy.app           import App
 from kivy.metrics       import dp
@@ -21,15 +18,12 @@ from kivy.uix.image     import Image
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.atlas         import Atlas
 from kivy.uix.scatter   import Scatter
-# }}}
 
-# Needed imports for Kivymd {{{
 from kivymd.theming  import ThemeManager
 from kivymd.snackbar import Snackbar
 
 from kivy.uix.image import Image
 from kivymd.ripplebehavior import CircularRippleBehavior
-# }}}
 
 # Global reference to game engine and web socket connection
 game   = None
@@ -37,7 +31,7 @@ sws    = None
 keys   = None
 mapper = None
 
-# Components {{{
+# Touchable components
 class cMap_interactive(Entity.Component):
   def __init__(self, _textures,
                     x=0,y=0, **kwargs):
@@ -49,14 +43,23 @@ class cMap_interactive(Entity.Component):
                             pos=(x,y), **kwargs
                            ))
 
-# }}}
+# Non touchable elements.
+class cMap(Entity.Component):
+  def __init__(self, _textures,
+                    x=0,y=0, **kwargs):
+    super(cMap, self).__init__()
+    self.pos = Entity.nPoint(x,y)
+    self.textures=Entity.Node(_textures)
+    
+    self.widget=Entity.Node(mappable(
+                            pos=(x,y), **kwargs
+                           ))
 
-# Systems {{{
 class sMap(Entity.System):
   def __init__(self, _stage):
     super(sMap, self).__init__()
     
-    self.component_filter = [cMap_interactive]
+    self.component_filter = [cMap_interactive, cMap]
     self.stage=_stage
     
   def add(self, _comp):
@@ -86,7 +89,7 @@ class sMap(Entity.System):
 class sCleanup(Entity.System):
   def __init__(self):
     super(sCleanup,self).__init__()
-    self.component_filter=[cMap_interactive]
+    self.component_filter=[cMap_interactive, cMap]
     
   def add(self,_comp):
     self.nodes.append([_comp.pos,
@@ -101,22 +104,22 @@ class sCleanup(Entity.System):
     for _ in self.nodes:
       for __ in _:
         __.updated=False
-# }}}
 
-# Entities {{{
 # Ship
 class eShip(Entity.Entity):
-  def on_key(self, _keys, _levels, _edges):
-    if (_edges | _levels) & {'w'}:
-      self.cmappable.pos.y += dp(5)
-    if (_edges | _levels) & {'s'}:
-      self.cmappable.pos.y -= dp(5)
+  def on_key(self, _keys, _levels, _edges, _dt):
+    if _keys & {'w'}:
+      self.cmappable.pos.y += dp(self.speed.data * _dt)
+    if _keys & {'s'}:
+      self.cmappable.pos.y -= dp(self.speed.data * _dt)
 
 
   def __init__(self, x, y):
     super().__init__()
 
     _textures = [ground_tex['grass1']]
+
+    self.speed = Entity.Node(1)
 
     self.cmappable=cMap_interactive(_textures,x,y,
         texture=_textures[0], on_release=self.on_tap
@@ -134,9 +137,7 @@ class eShip(Entity.Entity):
     #self.action(_ev,self.cmappable.pos.x,self.cmappable.pos.y)
     #snack('tapped')
     keys.fake_up(set('s'))
-# }}}
     
-# Entry point for main loop {{{
 def start():
   global game, sws, keys, mapper
 
@@ -156,12 +157,10 @@ def start():
   game.add(eShip(dp(200),dp(200)))
 
   # Start the loop process for the game.
-  Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.1)
+  Clock.schedule_interval(lambda _dt:game.tick(_dt*1000), 0.01)
   #open('assets/map.txt')
 
-#}}}  
 
-# system Websocket {{{
 class sWs(Entity.System):
   def __init__(self):
     super().__init__()
@@ -224,14 +223,11 @@ class sWs(Entity.System):
   def send(self, _data):
     if self.ws is not None:
       self.ws.send(str(_data))
-#}}}
 
 
-# Display snacks {{{
 @sync
 def snack(text):
   Snackbar(text = str(text)).show()
-#}}}
 
 
 # Root view
@@ -245,6 +241,7 @@ def atlas_nearest(_atlas):
 
 ground_tex = atlas_nearest(Atlas('assets/images/ground/ground.atlas'))
 
+# touchable elements of the screen, like buttons or in world objects.
 class mappable_interactive(ButtonBehavior, CircularRippleBehavior, Image):
   #allow dragging off of a target to cancel the click
   def on_touch_up(self, touch):
@@ -252,7 +249,10 @@ class mappable_interactive(ButtonBehavior, CircularRippleBehavior, Image):
       return super(mappable_interactive, self).on_touch_up(touch)
     return False
 
-# Kivy base class App {{{
+# just a drawable element.
+class mappable(Scatter, Image):
+  pass
+
 class SomeApp(App):
   theme_cls = ThemeManager()
   def build(self):
@@ -273,4 +273,3 @@ class SomeApp(App):
 app = SomeApp()
 
 app.run()
-#}}}

@@ -286,7 +286,7 @@ class sKey(System):
 
     for i in reversed(self.nodes):
       if compare_keys & i.keys:
-        _ret = i.action(compare_keys & i.keys & self.keys, self.levels & compare_keys, self.edges & compare_keys)
+        _ret = i.action(compare_keys & i.keys & self.keys, self.levels & compare_keys, self.edges & compare_keys, _delta)
         if _ret:
           compare_keys = compare_keys - _ret
 
